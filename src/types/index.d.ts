@@ -1,4 +1,4 @@
-declare module "react-image-annotation" {
+declare module "areteans-image-annotation" {
   export interface IGeometry {
     type: string;
     x?: number;
@@ -57,25 +57,31 @@ declare module "react-image-annotation" {
 
     disableAnnotation?: boolean;
     disableSelector?: boolean;
-    renderSelector?: (
-      { annotation, active }: { annotation: IAnnotation; active: boolean }
-    ) => any;
+    renderSelector?: ({
+      annotation,
+      active,
+    }: {
+      annotation: IAnnotation;
+      active: boolean;
+    }) => any;
     disableEditor?: boolean;
-    renderEditor?: (
-      {
-        annotation,
-        onChange,
-        onSubmit
-      }: {
-        annotation: IAnnotation;
-        onChange: (annotation: IAnnotation | {}) => any;
-        onSubmit: (e?: any) => any;
-      }
-    ) => any;
+    renderEditor?: ({
+      annotation,
+      onChange,
+      onSubmit,
+    }: {
+      annotation: IAnnotation;
+      onChange: (annotation: IAnnotation | {}) => any; // eslint-disable-line
+      onSubmit: (e?: any) => any;
+    }) => any;
 
-    renderHighlight?: (
-      { annotation, active }: { annotation: IAnnotation; active: boolean }
-    ) => any;
+    renderHighlight?: ({
+      annotation,
+      active,
+    }: {
+      annotation: IAnnotation;
+      active: boolean;
+    }) => any;
     renderContent?: ({ annotation }: { annotation: IAnnotation }) => any;
 
     disableOverlay?: boolean;
@@ -83,6 +89,6 @@ declare module "react-image-annotation" {
     allowTouch: boolean;
   }
 
-  class Annotation extends React.Component<IAnnotationProps, {}> {}
+  class Annotation extends React.Component<IAnnotationProps, {}> {} // eslint-disable-line
   export default Annotation;
 }

@@ -1,5 +1,5 @@
-import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 const Inner = styled.div`
   padding: 8px 16px;
@@ -11,7 +11,7 @@ const Inner = styled.div`
     min-height: 60px;
     outline: 0;
   }
-`
+`;
 
 const Button = styled.div`
   background: whitesmoke;
@@ -24,17 +24,18 @@ const Button = styled.div`
   outline: 0;
   padding: 8px 16px;
   text-align: center;
-  text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
   width: 100%;
 
   transition: background 0.21s ease-in-out;
 
-  &:focus, &:hover {
+  &:focus,
+  &:hover {
     background: #eeeeee;
   }
-`
+`;
 
-function TextEditor (props) {
+function TextEditor(props) {
   return (
     <React.Fragment>
       <Inner>
@@ -44,18 +45,11 @@ function TextEditor (props) {
           onBlur={props.onBlur}
           onChange={props.onChange}
           value={props.value}
-        >
-        </textarea>
+        ></textarea>
       </Inner>
-      {props.value && (
-        <Button
-          onClick={props.onSubmit}
-        >
-          Submit
-        </Button>
-      )}
+      {props.value && <Button onClick={props.onSubmit}>Submit</Button>}
     </React.Fragment>
-  )
+  );
 }
 
-export default TextEditor
+export default TextEditor;

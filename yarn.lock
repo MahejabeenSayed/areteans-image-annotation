@@ -206,6 +206,13 @@ aproba@^1.1.1:
   resolved "https://registry.npmjs.org/aproba/-/aproba-1.2.0.tgz"
   integrity sha512-Y9J6ZjXtoYh8RnXVCMOU/ttDmk1aBjunq9vO0ta5x85WDQiQfUF9sIPBITdbiiIVcBo03Hi3jMxigBtsddlXRw==
 
+areteans-image-annotation@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/areteans-image-annotation/-/areteans-image-annotation-1.0.0.tgz"
+  integrity sha512-j5P8Sc1kuZJu9p79/XbCoLOFPPk9Unm3B4RNts2IS6okrzDE85fAHa3LRcKkBPy8webWuH2haOo7xhe6nCEYug==
+  dependencies:
+    styled-components "^3.1.6"
+
 argparse@^1.0.7:
   version "1.0.10"
   resolved "https://registry.npmjs.org/argparse/-/argparse-1.0.10.tgz"
@@ -7598,7 +7605,7 @@ react-deep-force-update@^1.0.0:
   resolved "https://registry.npmjs.org/react-deep-force-update/-/react-deep-force-update-1.1.1.tgz"
   integrity sha512-iiKzmSe2sqcWJVbOTnf6ZlX5ZMaqaxEkDTEBHodZuwPSX5KN2eM+ILGeaRw78LrCvdUyyrsGz8kJC5PhVqOtdw==
 
-react-dom@^16.0.0-0, react-dom@^16.8.6:
+react-dom@^16.0.0-0, react-dom@^16.8.6, react-dom@>=0.14:
   version "16.8.6"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-16.8.6.tgz"
   integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
@@ -7689,7 +7696,7 @@ react-transform-hmr@1.0.4:
     global "^4.3.0"
     react-proxy "^1.1.7"
 
-react@^16.0.0, react@^16.0.0-0, react@^16.8.6, "react@>= 0.14.0", "react@>= 0.14.0 < 17.0.0-0", react@>=15, "react@0.13.x || 0.14.x || ^15.0.0-0 || ^16.0.0-0":
+react@^16.0.0, react@^16.0.0-0, react@^16.3, react@^16.8.6, "react@>= 0.14.0", "react@>= 0.14.0 < 17.0.0-0", react@>=15, "react@0.13.x || 0.14.x || ^15.0.0-0 || ^16.0.0-0":
   version "16.8.6"
   resolved "https://registry.npmjs.org/react/-/react-16.8.6.tgz"
   integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==

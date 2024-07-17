@@ -3,10 +3,14 @@ import T from "prop-types";
 import styled from "styled-components";
 import compose from "../utils/compose";
 import isMouseHovering from "../utils/isMouseHovering";
+
 import withRelativeMousePos from "../utils/withRelativeMousePos";
 
 import defaultProps from "./defaultProps";
 import Overlay from "./Overlay";
+
+// jabeen
+import { getOffsetCoordPercentage } from "../utils/offsetCoordinates";
 
 const Container = styled.div`
   clear: both;
@@ -38,12 +42,17 @@ export default compose(
   withRelativeMousePos()
 )(
   class Annotation extends Component {
+    constructor() {
+      super();
+      this.state = { x: null, y: null };
+    }
+    // eslint-disable-next-line
     static propTypes = {
       innerRef: T.func,
-      onMouseUp: T.func,
-      onMouseDown: T.func,
-      onMouseMove: T.func,
-      onClick: T.func,
+      onMouseUp: T.func, // eslint-disable-line
+      onMouseDown: T.func, // eslint-disable-line
+      onMouseMove: T.func, // eslint-disable-line
+      onClick: T.func, // eslint-disable-line
       children: T.object,
 
       annotations: T.arrayOf(
@@ -90,10 +99,18 @@ export default compose(
 
     static defaultProps = defaultProps;
 
-    targetRef = React.createRef();
+    targetRef = React.createRef(); // eslint-disable-line
+    imgRef = React.createRef(); // eslint-disable-line
+
     componentDidMount() {
-      if (this.props.allowTouch) {
+      if (this.props.allowTouch && this.targetRef && this.targetRef.current) {
+        // this.targetRef.current.capture().then(uri => {
         this.addTargetTouchEventListeners();
+        // });
+      }
+
+      if (this.imgRef && this.imgRef.current) {
+        this.container = this.imgRef.current;
       }
     }
 
@@ -102,11 +119,13 @@ export default compose(
       // so we need to call preventDefault ourselves to stop touch from scrolling
       // Event handlers must be set via ref to enable e.preventDefault()
       // https://github.com/facebook/react/issues/9809
+
       this.targetRef.current.ontouchstart = this.onTouchStart;
       this.targetRef.current.ontouchend = this.onTouchEnd;
       this.targetRef.current.ontouchmove = this.onTargetTouchMove;
       this.targetRef.current.ontouchcancel = this.onTargetTouchLeave;
     };
+
     removeTargetTouchEventListeners = () => {
       this.targetRef.current.ontouchstart = undefined;
       this.targetRef.current.ontouchend = undefined;
@@ -125,11 +144,9 @@ export default compose(
     }
 
     setInnerRef = (el) => {
-      console.log("container", el);
-
       this.container = el;
       this.props.relativeMousePos.innerRef(el);
-      this.props.innerRef(el);
+      // this.props.innerRef(el);
     };
 
     getSelectorByType = (type) => {
@@ -139,6 +156,10 @@ export default compose(
     getTopAnnotationAt = (x, y) => {
       const { annotations } = this.props;
       const { container, getSelectorByType } = this;
+      // jabeen
+
+      // container = document.getElementById('img-ele');
+
       if (!container) return;
 
       const intersections = annotations
@@ -165,9 +186,16 @@ export default compose(
     };
 
     onTargetMouseMove = (e) => {
-      this.props.relativeMousePos.onMouseMove(e);
+      // jabeen
+      const ele = document.getElementById("img-ele");
+      const xystate = getOffsetCoordPercentage(e, ele);
+      this.setState(xystate);
+      // end
+
+      // this.props.relativeMousePos.onMouseMove(e);
       this.onMouseMove(e);
     };
+
     onTargetTouchMove = (e) => {
       this.props.relativeMousePos.onTouchMove(e);
       this.onTouchMove(e);
@@ -176,6 +204,7 @@ export default compose(
     onTargetMouseLeave = (e) => {
       this.props.relativeMousePos.onMouseLeave(e);
     };
+
     onTargetTouchLeave = (e) => {
       this.props.relativeMousePos.onTouchLeave(e);
     };
@@ -198,6 +227,7 @@ export default compose(
       }
 
       if (!!this.props[methodName]) {
+        // eslint-disable-line
         this.props[methodName](e);
       } else {
         const selector = this.getSelectorByType(this.props.type);
@@ -206,7 +236,9 @@ export default compose(
 
           if (typeof value === "undefined") {
             if (process.env.NODE_ENV !== "production") {
-              console.error(`
+              // eslint-disable-line
+              // eslint-disable-next-line
+              console.error(` 
               ${methodName} of selector type ${this.props.type} returned undefined.
               Make sure to explicitly return the previous state
             `);
@@ -233,7 +265,7 @@ export default compose(
     render() {
       const { props } = this;
       const {
-        isMouseHovering,
+        isMouseHovering, // eslint-disable-line
 
         renderHighlight,
         renderContent,
@@ -243,14 +275,17 @@ export default compose(
         allowTouch,
       } = props;
 
+      // jabeen changes
       const topAnnotationAtMouse = this.getTopAnnotationAt(
-        this.props.relativeMousePos.x,
-        this.props.relativeMousePos.y
+        this.state.x,
+        this.state.y
+        // this.props.relativeMousePos.x,
+        // this.props.relativeMousePos.y
       );
 
       return (
         <Container
-          id="abc"
+          id="annotation-ele"
           style={props.style}
           innerRef={isMouseHovering.innerRef}
           onMouseLeave={this.onTargetMouseLeave}
@@ -259,6 +294,8 @@ export default compose(
         >
           <Img
             className={props.className}
+            id="img-ele"
+            ref={this.imgRef}
             style={props.style}
             alt={props.alt}
             src={props.src}
@@ -300,7 +337,7 @@ export default compose(
               this.shouldAnnotationBeActive(annotation, topAnnotationAtMouse) &&
               renderContent({
                 key: annotation.data.id,
-                annotation: annotation,
+                annotation,
               })
           )}
           {!props.disableEditor &&

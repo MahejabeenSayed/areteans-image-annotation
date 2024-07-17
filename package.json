@@ -1,6 +1,6 @@
 {
   "name": "areteans-image-annotation",
-  "version": "0.9.10",
+  "version": "1.0.4",
   "description": "react-image-annotation React component",
   "author": "Arian Allenson Valdez <arianallensonv@gmail.com> (http://arianv.com/)",
   "main": "lib/index.js",
@@ -21,6 +21,7 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
+    "areteans-image-annotation": "^1.0.0",
     "styled-components": "^3.1.6"
   },
   "peerDependencies": {

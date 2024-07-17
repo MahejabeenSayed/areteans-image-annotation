@@ -1,32 +1,34 @@
 import { getCoordPercentage } from '../utils/offsetCoordinates';
-const MARGIN = 6
 
-const marginToPercentage = (container) => ({
-  marginX: MARGIN / container.width * 100,
-  marginY: MARGIN / container.height * 100
-})
+const MARGIN = 6;
 
-export const TYPE = 'POINT'
+const marginToPercentage = container => ({
+  marginX: (MARGIN / container.width) * 100,
+  marginY: (MARGIN / container.height) * 100
+});
 
-export function intersects ({ x, y }, geometry, container) {
-  const { marginX, marginY } = marginToPercentage(container)
+export const TYPE = 'POINT';
 
-  if (x < geometry.x - marginX) return false
-  if (y < geometry.y - marginY) return false
-  if (x > geometry.x + marginX) return false
-  if (y > geometry.y + marginY) return false
+export function intersects({ x, y }, geometry, container) {
+  const { marginX, marginY } = marginToPercentage(container);
+  let flag = true;
+  // @ts-ignore
+  if (x < geometry.x - marginX) flag = false;
+  if (y < geometry.y - marginY) flag = false;
+  if (x > geometry.x + marginX) flag = false;
+  if (y > geometry.y + marginY) flag = false;
 
-  return true
+  return flag;
 }
 
-export function area (geometry, container) {
-  const { marginX, marginY } = marginToPercentage(container)
+export function area(geometry, container) {
+  const { marginX, marginY } = marginToPercentage(container);
 
-  return marginX * marginY
+  return marginX * marginY;
 }
 
 export const methods = {
-  onClick (annotation, e) {
+  onClick(annotation, e) {
     if (!annotation.geometry) {
       return {
         ...annotation,
@@ -40,18 +42,18 @@ export const methods = {
           ...getCoordPercentage(e),
           width: 0,
           height: 0,
-          type: TYPE,
+          type: TYPE
         }
-      }
-    } else{
-      return {}
+      };
+    } else {
+      return {};
     }
   }
-}
+};
 
 export default {
   TYPE,
   intersects,
   area,
   methods
-}
+};

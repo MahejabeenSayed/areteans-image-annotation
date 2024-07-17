@@ -1,51 +1,31 @@
 import { getCoordPercentage } from '../utils/offsetCoordinates';
 
-const square = n => Math.pow(n, 2)
+// @ts-ignore
+const square = n => Math.pow(n, 2); // eslint-disable-line
 
-export const TYPE = 'OVAL'
+export const TYPE = 'OVAL';
 
 export function intersects({ x, y }, geometry) {
-  const rx = geometry.width / 2
-  const ry = geometry.height / 2
-  const h = geometry.x + rx
-  const k = geometry.y + ry
+  const rx = geometry.width / 2;
+  const ry = geometry.height / 2;
+  const h = geometry.x + rx;
+  const k = geometry.y + ry;
 
-  const value = square(x - h) / square(rx) + square(y - k) / square(ry)
+  const value = square(x - h) / square(rx) + square(y - k) / square(ry);
 
-  return value <= 1
+  return value <= 1;
 }
 
 export function area(geometry) {
-  const rx = geometry.width / 2
-  const ry = geometry.height / 2
+  const rx = geometry.width / 2;
+  const ry = geometry.height / 2;
 
-  return Math.PI * rx * ry
-}
-
-export const methods = {
-  onTouchStart(annotation, e) {
-    return pointerDown(annotation, e)
-  },
-  onTouchEnd(annotation, e) {
-    return pointerUp(annotation, e)
-  },
-  onTouchMove(annotation, e) {
-    return pointerMove(annotation, e)
-  },
-  onMouseDown(annotation, e) {
-    return pointerDown(annotation, e)
-  },
-  onMouseUp(annotation, e) {
-    return pointerUp(annotation, e)
-  },
-  onMouseMove(annotation, e) {
-    return pointerMove(annotation, e)
-  }
+  return Math.PI * rx * ry;
 }
 
 function pointerDown(annotation, e) {
   if (!annotation.selection) {
-    const { x: anchorX, y: anchorY } = getCoordPercentage(e)
+    const { x: anchorX, y: anchorY } = getCoordPercentage(e);
 
     return {
       ...annotation,
@@ -55,21 +35,22 @@ function pointerDown(annotation, e) {
         anchorX,
         anchorY
       }
-    }
+    };
   } else {
-    return {}
+    return {};
   }
-  return annotation
+  // return annotation;
 }
 
-function pointerUp(annotation, e) {
+function pointerUp(annotation) {
   if (annotation.selection) {
-    const { selection, geometry } = annotation
+    const { geometry } = annotation;
 
     if (!geometry) {
-      return {}
+      return {};
     }
 
+    // eslint-disable-next-line
     switch (annotation.selection.mode) {
       case 'SELECTING':
         return {
@@ -79,20 +60,20 @@ function pointerUp(annotation, e) {
             showEditor: true,
             mode: 'EDITING'
           }
-        }
+        };
       default:
-        break
+        break;
     }
   }
-  return annotation
+  return annotation;
 }
 
 function pointerMove(annotation, e) {
   if (annotation.selection && annotation.selection.mode === 'SELECTING') {
-    const { anchorX, anchorY } = annotation.selection
-    const { x: newX, y: newY } = getCoordPercentage(e)
-    const width = newX - anchorX
-    const height = newY - anchorY
+    const { anchorX, anchorY } = annotation.selection;
+    const { x: newX, y: newY } = getCoordPercentage(e);
+    const width = newX - anchorX;
+    const height = newY - anchorY;
 
     return {
       ...annotation,
@@ -104,14 +85,35 @@ function pointerMove(annotation, e) {
         width: Math.abs(width),
         height: Math.abs(height)
       }
-    }
+    };
   }
-  return annotation
+  return annotation;
 }
+
+export const methods = {
+  onTouchStart(annotation, e) {
+    return pointerDown(annotation, e);
+  },
+  onTouchEnd(annotation) {
+    return pointerUp(annotation);
+  },
+  onTouchMove(annotation, e) {
+    return pointerMove(annotation, e);
+  },
+  onMouseDown(annotation, e) {
+    return pointerDown(annotation, e);
+  },
+  onMouseUp(annotation) {
+    return pointerUp(annotation);
+  },
+  onMouseMove(annotation, e) {
+    return pointerMove(annotation, e);
+  }
+};
 
 export default {
   TYPE,
   intersects,
   area,
   methods
-}
+};

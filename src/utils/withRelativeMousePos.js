@@ -5,7 +5,10 @@ const withRelativeMousePos =
   (key = "relativeMousePos") =>
   (DecoratedComponent) => {
     class WithRelativeMousePos extends Component {
-      state = { x: null, y: null };
+      constructor() {
+        super();
+        this.state = { x: null, y: null };
+      }
 
       innerRef = (el) => {
         this.container = el;
@@ -15,6 +18,7 @@ const withRelativeMousePos =
         const xystate = getOffsetCoordPercentage(e, this.container);
         this.setState(xystate);
       };
+
       onTouchMove = (e) => {
         if (e.targetTouches.length === 1) {
           const touch = e.targetTouches[0];
@@ -29,10 +33,11 @@ const withRelativeMousePos =
         }
       };
 
-      onMouseLeave = (e) => {
+      onMouseLeave = () => {
         this.setState({ x: null, y: null });
       };
-      onTouchLeave = (e) => {
+
+      onTouchLeave = () => {
         this.setState({ x: null, y: null });
       };
 
@@ -53,7 +58,7 @@ const withRelativeMousePos =
       }
     }
 
-    WithRelativeMousePos.displayName = `withRelativeMousePos(${DecoratedComponent.displayName})`;
+    WithRelativeMousePos.displayName = `withRelativeMousePos(${DecoratedComponent.displayName})`; // eslint-disable-line
 
     return WithRelativeMousePos;
   };

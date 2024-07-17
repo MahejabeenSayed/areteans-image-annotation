@@ -1,4 +1,4 @@
-const getMouseRelativeCoordinates = (e) => {
+const getMouseRelativeCoordinates = e => {
   // nativeEvent.offsetX gives inconsistent results when dragging
   // up and to the left rather than the more natural down and to the
   // right. The reason could be browser implementation (it is still experimental)
@@ -11,12 +11,12 @@ const getMouseRelativeCoordinates = (e) => {
 
   return {
     x: (offsetX / rect.width) * 100,
-    y: (offsetY / rect.height) * 100,
+    y: (offsetY / rect.height) * 100
   };
 };
 
 const clamp = (a, b, i) => Math.max(a, Math.min(b, i));
-const getTouchRelativeCoordinates = (e) => {
+const getTouchRelativeCoordinates = e => {
   const touch = e.targetTouches[0];
 
   const boundingRect = e.currentTarget.getBoundingClientRect();
@@ -27,18 +27,22 @@ const getTouchRelativeCoordinates = (e) => {
 
   return {
     x: clamp(0, 100, (offsetX / boundingRect.width) * 100),
-    y: clamp(0, 100, (offsetY / boundingRect.height) * 100),
+    y: clamp(0, 100, (offsetY / boundingRect.height) * 100)
   };
 };
+const isTouchEvent = e => e.targetTouches !== undefined;
+const isValidTouchEvent = e => e.targetTouches.length === 1;
+const isTouchMoveEvent = e => e.type === 'touchmove';
 
-const getCoordPercentage = (e) => {
+// @ts-ignore
+const getCoordPercentage = e => {
   if (isTouchEvent(e)) {
     if (isValidTouchEvent(e)) {
-      isTouchMoveEvent(e) && e.preventDefault();
+      isTouchMoveEvent(e) && e.preventDefault(); // eslint-disable-line
       return getTouchRelativeCoordinates(e);
     } else {
       return {
-        x: null,
+        x: null
       };
     }
   } else {
@@ -46,11 +50,4 @@ const getCoordPercentage = (e) => {
   }
 };
 
-const isTouchEvent = (e) => e.targetTouches !== undefined;
-const isValidTouchEvent = (e) => e.targetTouches.length === 1;
-const isTouchMoveEvent = (e) => e.type === "touchmove";
-
-export {
-  getMouseRelativeCoordinates as getOffsetCoordPercentage,
-  getCoordPercentage,
-};
+export { getMouseRelativeCoordinates as getOffsetCoordPercentage, getCoordPercentage };

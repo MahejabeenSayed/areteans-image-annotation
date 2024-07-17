@@ -10,7 +10,6 @@ const isMouseOverElement = ({ elem, e }) => {
 const isMouseHovering =
   (key = "isMouseHovering") =>
   (DecoratedComponent) => {
-    debugger;
     class IsMouseHovering extends Component {
       constructor() {
         super();
@@ -29,7 +28,9 @@ const isMouseHovering =
       }
 
       onMouseMove = (e) => {
-        const elem = this.el;
+        const elem = document.getElementById("annotation-ele");
+        // const elem = this.el;
+
         this.setState({
           isHoveringOver: isMouseOverElement({ elem, e }),
         });
@@ -39,18 +40,19 @@ const isMouseHovering =
         const hocProps = {
           [key]: {
             innerRef: (el) => {
-              debugger;
-              this.el = el;
+              // const elem = document.getElementById('annotation-ele');
+              this.el = el; // eslint-disable-line
             },
             isHoveringOver: this.state.isHoveringOver,
           },
         };
 
+        // @ts-ignore
         return <DecoratedComponent {...this.props} {...hocProps} />;
       }
     }
 
-    IsMouseHovering.displayName = `IsMouseHovering(${DecoratedComponent.displayName})`;
+    IsMouseHovering.displayName = `IsMouseHovering(${DecoratedComponent.displayName})`; // eslint-disable-line
 
     return IsMouseHovering;
   };
